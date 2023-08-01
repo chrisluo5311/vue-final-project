@@ -49,9 +49,7 @@ export default {
   },
   methods: {
     signIn () {
-      console.log('signin')
       const api = `${process.env.VUE_APP_API}admin/signin`
-      console.log(api)
       this.$http.post(api, this.user).then((res) => {
         if (res.data.success) {
           const { token, expired } = res.data

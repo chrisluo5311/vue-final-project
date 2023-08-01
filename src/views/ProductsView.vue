@@ -1,7 +1,7 @@
 <template>
     <div class="text-end">
       <button class="btn btn-primary" type="button"
-      @click="$refs.productModal.showModal()">
+      @click="openModal(true,{},false)">
         增加一個商品
       </button>
     </div>
@@ -32,30 +32,49 @@
         </td>
         <td>
             <div class="btn-group">
-            <button class="btn btn-outline-primary btn-sm">編輯</button>
-            <button class="btn btn-outline-danger btn-sm">刪除</button>
+            <button class="btn btn-outline-primary btn-sm" @click="openModal(false, item, false)">編輯</button>
+            <button class="btn btn-outline-danger btn-sm" @click="openModal(false, item, true)">刪除</button>
             </div>
         </td>
         </tr>
     </tbody>
     </table>
-    <ProductModal ref="productModal"></ProductModal>
+    <ProductModal ref="productModal"
+    :product="tempProduct" @update-product="updateProduct"></ProductModal>
+    <DelModal ref="delModal" :product="tempProduct" @delete-product="deleteProduct"></DelModal>
 </template>
 
 <script>
 import ProductModal from '../components/ProductModal.vue'
+import DelModal from '../components/DelModal.vue'
 
 export default {
   data () {
     return {
       product: [],
-      pagination: {}
+      pagination: {},
+      tempProduct: {},
+      isNew: false
     }
   },
   components: {
-    ProductModal
+    ProductModal,
+    DelModal
   },
   methods: {
+    openModal (isNew, item, isDelete) {
+      if (isNew) {
+        this.tempProduct = {}
+      } else {
+        this.tempProduct = { ...item }
+      }
+      this.isNew = isNew
+      let modalComponent = this.$refs.productModal
+      if (isDelete) {
+        modalComponent = this.$refs.delModal
+      }
+      modalComponent.showModal()
+    },
     getProducts () {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`
       this.$http.get(api).then((res) => {
@@ -63,6 +82,36 @@ export default {
           console.log(res)
           this.product = res.data.products
           this.pagination = res.data.pagination
+        }
+      })
+    },
+    updateProduct (item) {
+      this.tempProduct = item
+      console.log(this.tempProduct)
+      // 新增
+      let api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product`
+      let httpMethod = 'post'
+      // 編輯
+      if (!this.isNew) {
+        api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`
+        httpMethod = 'put'
+      }
+      const productComponent = this.$refs.productModal
+      this.$http[httpMethod](api, { data: this.tempProduct }).then((res) => {
+        console.log(res)
+        productComponent.hideModal()
+        this.getProducts()
+      })
+    },
+    deleteProduct (item) {
+      this.tempProduct = item
+      const delComponent = this.$refs.delModal
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`
+      this.$http.delete(api).then((res) => {
+        if (res.data.success) {
+          console.log(res)
+          delComponent.hideModal()
+          this.getProducts()
         }
       })
     }
