@@ -1,4 +1,5 @@
 <template>
+  <LoadingComponent :active="isLoading"></LoadingComponent>
   <div
     class="modal fade"
     id="exampleModal"
@@ -173,7 +174,7 @@
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal'
+import modalMixin from '@/mixins/modalMixin'
 
 export default {
   props: {
@@ -192,31 +193,26 @@ export default {
   data () {
     return {
       modal: {},
-      tempProduct: {}
+      tempProduct: {},
+      isLoading: false
     }
   },
+  mixins: [modalMixin],
   methods: {
-    showModal () {
-      this.modal.show()
-    },
-    hideModal () {
-      this.modal.hide()
-    },
     uploadFile () {
       const uploadedFile = this.$refs.fileInput.files[0]
       const formData = new FormData()
       formData.append('file-to-upload', uploadedFile)
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`
+      this.isLoading = true
       this.$http.post(api, formData).then((res) => {
+        this.isLoading = false
         console.log(res.data)
         if (res.data.success) {
           this.tempProduct.imageUrl = res.data.imageUrl
         }
       })
     }
-  },
-  mounted () {
-    this.modal = new Modal(this.$refs.modal)
   }
 }
 </script>
