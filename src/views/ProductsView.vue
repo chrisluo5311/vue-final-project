@@ -63,6 +63,7 @@ export default {
     ProductModal,
     DelModal
   },
+  inject: ['emitter'],
   methods: {
     openModal (isNew, item, isDelete) {
       if (isNew) {
@@ -106,7 +107,19 @@ export default {
         this.isLoading = false
         console.log(res)
         productComponent.hideModal()
-        this.getProducts()
+        if (res.data.success) {
+          this.getProducts()
+          this.emitter.emit('push-message', {
+            style: 'success',
+            title: '更新成功'
+          })
+        } else {
+          this.emitter.emit('push-message', {
+            style: 'danger',
+            title: '更新失敗',
+            content: res.data.message.join('、')
+          })
+        }
       })
     },
     deleteProduct (item) {
