@@ -19,13 +19,13 @@
     </thead>
     <tbody>
         <tr v-for="item in product" :key="item.id">
-        <td>{{item.category}}</td>
-        <td>{{item.title}}</td>
+        <td>{{ item.category }}</td>
+        <td>{{ item.title }}</td>
         <td class="text-right">
-            {{item.origin_price}}
+            {{ $filters.currency(item.origin_price) }}
         </td>
         <td class="text-right">
-            {{item.price}}
+            {{ $filters.currency(item.price) }}
         </td>
         <td>
             <span class="text-success" v-if="item.is_enabled">啟用</span>
@@ -40,6 +40,7 @@
         </tr>
     </tbody>
     </table>
+    <PaginationComponent :pages="pagination" @emit-pages="getProducts"></PaginationComponent>
     <ProductModal ref="productModal"
     :product="tempProduct" @update-product="updateProduct"></ProductModal>
     <DelModal ref="delModal" :product="tempProduct" @delete-product="deleteProduct"></DelModal>
@@ -48,6 +49,7 @@
 <script>
 import ProductModal from '../components/ProductModal.vue';
 import DelModal from '../components/DelModal.vue';
+import PaginationComponent from '../components/PaginationComponent.vue';
 
 export default {
   data () {
@@ -62,6 +64,7 @@ export default {
   components: {
     ProductModal,
     DelModal,
+    PaginationComponent
   },
   inject: ['emitter'],
   methods: {
@@ -78,8 +81,8 @@ export default {
       }
       modalComponent.showModal();
     },
-    getProducts () {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`;
+    getProducts (page = 1) {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products?page=${page}`;
       this.isLoading = true;
       this.$http.get(api).then((res) => {
         this.isLoading = false;

@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App" />
+    <router-link to="/login" class="btn btn-primary">前往登入頁</router-link>
   </div>
 </template>
 
