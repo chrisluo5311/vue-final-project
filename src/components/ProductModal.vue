@@ -174,7 +174,7 @@
 </template>
 
 <script>
-import modalMixin from '@/mixins/modalMixin'
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   props: {
@@ -187,29 +187,29 @@ export default {
   },
   watch: {
     product () {
-      this.tempProduct = this.product
+      this.tempProduct = this.product;
     }
   },
   data () {
     return {
       modal: {},
       tempProduct: {},
-      isLoading: false
+      isLoading: false,
     }
   },
   mixins: [modalMixin],
   methods: {
     uploadFile () {
-      const uploadedFile = this.$refs.fileInput.files[0]
-      const formData = new FormData()
-      formData.append('file-to-upload', uploadedFile)
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`
-      this.isLoading = true
+      const uploadedFile = this.$refs.fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file-to-upload', uploadedFile);
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
+      this.isLoading = true;
       this.$http.post(api, formData).then((res) => {
-        this.isLoading = false
-        console.log(res.data)
+        this.isLoading = false;
+        console.log(res.data);
         if (res.data.success) {
-          this.tempProduct.imageUrl = res.data.imageUrl
+          this.tempProduct.imageUrl = res.data.imageUrl;
         }
       })
     }

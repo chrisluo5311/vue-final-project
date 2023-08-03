@@ -29,17 +29,17 @@
 export default {
   data () {
     return {
-      isLoading: false
+      isLoading: false,
     }
   },
   methods: {
     logout () {
-      const api = `${process.env.VUE_APP_API}logout`
-      this.isLoading = true
+      const api = `${process.env.VUE_APP_API}logout`;
+      this.isLoading = true;
       this.$http.post(api, this.user).then((res) => {
-        this.isLoading = false
+        this.isLoading = false;
         if (res.data.success) {
-          this.$router.push('/login')
+          this.$router.push('/login');
         }
       })
     }

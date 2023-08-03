@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Toast from 'bootstrap/js/dist/toast'
+import Toast from 'bootstrap/js/dist/toast';
 
 export default {
   name: 'ToastComponent',
@@ -23,11 +23,11 @@ export default {
     'msg'
   ],
   mounted () {
-    const toastEl = this.$refs.toast
+    const toastEl = this.$refs.toast;
     const toast = new Toast(toastEl, {
-      delay: 6000
+      delay: 6000,
     })
-    toast.show()
+    toast.show();
   }
 }
 </script>

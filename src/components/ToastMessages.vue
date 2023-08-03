@@ -6,20 +6,20 @@
 </template>
 
 <script>
-import Toast from '@/components/ToastComponent.vue'
+import Toast from '@/components/ToastComponent.vue';
 
 export default {
   components: { Toast },
   data () {
     return {
-      messages: []
+      messages: [],
     }
   },
   inject: ['emitter'],
   mounted () {
     this.emitter.on('push-message', (message) => {
-      const { style = 'success', title, content } = message
-      this.messages.push({ style, title, content })
+      const { style = 'success', title, content } = message;
+      this.messages.push({ style, title, content });
     })
   }
 }

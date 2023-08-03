@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import modalMixin from '@/mixins/modalMixin'
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
   props: {
@@ -39,13 +39,13 @@ export default {
   },
   watch: {
     product () {
-      this.tempProduct = this.product
+      this.tempProduct = this.product;
     }
   },
   data () {
     return {
       modal: {},
-      tempProduct: {}
+      tempProduct: {},
     }
   },
   mixins: [modalMixin]
