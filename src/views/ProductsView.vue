@@ -84,12 +84,12 @@ export default {
     getProducts (page = 1) {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products?page=${page}`;
       this.isLoading = true;
-      this.$http.get(api).then((res) => {
+      this.$http.get(api).then((response) => {
         this.isLoading = false;
-        if (res.data.success) {
-          console.log(res);
-          this.product = res.data.products;
-          this.pagination = res.data.pagination;
+        if (response.data.success) {
+          console.log(response);
+          this.product = response.data.products;
+          this.pagination = response.data.pagination;
         }
       })
     },
@@ -106,23 +106,12 @@ export default {
       }
       const productComponent = this.$refs.productModal;
       this.isLoading = true;
-      this.$http[httpMethod](api, { data: this.tempProduct }).then((res) => {
+      this.$http[httpMethod](api, { data: this.tempProduct }).then((response) => {
         this.isLoading = false;
-        console.log(res);
+        console.log(response);
         productComponent.hideModal();
-        if (res.data.success) {
-          this.getProducts();
-          this.emitter.emit('push-message', {
-            style: 'success',
-            title: '更新成功',
-          })
-        } else {
-          this.emitter.emit('push-message', {
-            style: 'danger',
-            title: '更新失敗',
-            content: res.data.message.join('、'),
-          })
-        }
+        this.getProducts();
+        this.$httpPushMessageState(response)
       })
     },
     deleteProduct (item) {
@@ -130,10 +119,10 @@ export default {
       const delComponent = this.$refs.delModal;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
       this.isLoading = true;
-      this.$http.delete(api).then((res) => {
+      this.$http.delete(api).then((response) => {
         this.isLoading = false;
-        if (res.data.success) {
-          console.log(res);
+        if (response.data.success) {
+          console.log(response);
           delComponent.hideModal();
           this.getProducts();
         }

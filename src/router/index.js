@@ -31,11 +31,11 @@ const routes = [
       },
       {
         path: 'orders',
-        component: () => import('../views/OrderView.vue')
+        component: () => import('../views/OrdersView.vue')
       },
       {
         path: 'coupons',
-        component: () => import('../views/CouponView.vue')
+        component: () => import('../views/CouponsView.vue')
       }
     ]
   }
