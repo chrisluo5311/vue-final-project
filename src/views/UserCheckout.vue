@@ -52,6 +52,9 @@
       <div class="text-end" v-if="order.is_paid === false">
         <button class="btn btn-danger" >確認付款去</button>
       </div>
+      <div class="text-end" v-if="order.is_paid === true">
+        <router-link class="btn btn-secondary" to="/user/cart">回購物頁面</router-link>
+      </div>
     </form>
   </div>
 </template>

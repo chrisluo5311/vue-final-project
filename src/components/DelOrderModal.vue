@@ -10,15 +10,15 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title">刪除 {{ tempProduct.title }}</h5>
+        <h5 class="modal-title">刪除 {{ tempOrder.id }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <p>是否刪除 <span class="text-danger">{{ tempProduct.title }}</span>(刪除後將無法恢復)</p>
+            <p>是否刪除 <span class="text-danger">{{ tempOrder.id }}</span>(刪除後將無法恢復)</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-danger text-white" @click="$emit('delete-product',tempProduct)">確認刪除</button>
+            <button type="button" class="btn btn-danger text-white" @click="$emit('delete-order',tempOrder)">確認刪除</button>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@ import modalMixin from '@/mixins/modalMixin';
 
 export default {
   props: {
-    product: {
+    order: {
       type: Object,
       default () {
         return {}
@@ -38,17 +38,16 @@ export default {
     }
   },
   watch: {
-    product () {
-      this.tempProduct = this.product;
+    order () {
+      this.tempOrder = this.order;
     }
   },
   data () {
     return {
       modal: {},
-      tempProduct: {},
+      tempOrder: {},
     }
   },
-  mixins: [modalMixin],
+  mixins: [modalMixin]
 }
-
 </script>

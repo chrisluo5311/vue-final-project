@@ -181,11 +181,14 @@
               class="form-control"
               rules="email|required"
               placeholder="請輸入 Email"
-              :class="{'is-invalid':errors['email'] }"
+              :class="{ 'is-invalid': errors['email'] }"
               v-model="form.user.email"
             />
             <!-- 此處的 invalid-feedback 搭配上面 is-invalid 表示無效 -->
-            <error-message name="email" class="invalid-feedback"></error-message>
+            <error-message
+              name="email"
+              class="invalid-feedback"
+            ></error-message>
           </div>
           <div class="mb-3">
             <label for="name" class="form-label">收件人姓名</label>
@@ -196,7 +199,7 @@
               class="form-control"
               rules="required"
               placeholder="請輸入姓名"
-              :class="{'is-invalid':errors['姓名'] }"
+              :class="{ 'is-invalid': errors['姓名'] }"
               v-model="form.user.name"
             />
             <ErrorMessage name="姓名" class="invalid-feedback"></ErrorMessage>
@@ -210,7 +213,7 @@
               class="form-control"
               placeholder="請輸入電話"
               :rules="isPhone"
-              :class="{'is-invalid':errors['電話'] }"
+              :class="{ 'is-invalid': errors['電話'] }"
               v-model="form.user.tel"
             />
             <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
@@ -224,7 +227,7 @@
               class="form-control"
               rules="required"
               placeholder="請輸入地址"
-              :class="{'is-invalid':errors['地址'] }"
+              :class="{ 'is-invalid': errors['地址'] }"
               v-model="form.user.address"
             />
             <ErrorMessage name="地址" class="invalid-feedback"></ErrorMessage>
@@ -237,12 +240,27 @@
               name="留言"
               type="text"
               class="form-control"
-              :class="{'is-invalid':errors['留言'] }"
+              :class="{ 'is-invalid': errors['留言'] }"
               v-model="form.message"
             />
             <ErrorMessage name="留言" class="invalid-feedback"></ErrorMessage>
           </div>
-          <button class="btn btn-danger" type="submit">Submit</button>
+          <button
+            class="btn btn-danger"
+            type="submit"
+          >
+            <div
+              class="spinner-border text-secondary spinner-border-sm"
+              role="status"
+              v-if="
+                this.form.user.name != '' &&
+                this.status.laodingUserName === this.form.user.name
+              "
+            >
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            Submit
+          </button>
         </Form>
       </div>
     </div>
@@ -258,17 +276,18 @@ export default {
       status: {
         loadingItem: "", // 對應品項id
         loadingCoupon: "",
+        laodingUserName: "",
       },
       cart: [],
       coupon_code: "",
       form: {
         user: {
-          name: '',
-          email: '',
-          tel: '',
-          address: ''
+          name: "",
+          email: "",
+          tel: "",
+          address: "",
         },
-        message: ''
+        message: "",
       },
       isLoading: false,
     };
@@ -355,14 +374,17 @@ export default {
       });
     },
     isPhone(value) {
-      const phoneNumber = /^(09)[0-9]{8}$/
-      return phoneNumber.test(value) ? true : '需要正確的電話號碼'
+      const phoneNumber = /^(09)[0-9]{8}$/;
+      return phoneNumber.test(value) ? true : "需要正確的電話號碼";
     },
     createOrder() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order`;
       const order = this.form;
+      this.status.laodingUserName = this.form.user.name;
       this.$http.post(api, { data: order }).then((response) => {
         console.log("createOrder", response);
+        this.status.laodingUserName = "";
+        this.$router.push(`/user/checkout/${response.data.orderId}`);
       });
     },
   },
