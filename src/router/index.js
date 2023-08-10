@@ -38,6 +38,29 @@ const routes = [
         component: () => import('../views/CouponsView.vue')
       }
     ]
+  },
+  {
+    path: '/user',
+    component: () => import('../views/UserBoard.vue'),
+    children: [
+      {
+        path: 'cart',
+        component: () => import('../views/UserCart.vue')
+      },
+      {
+        path: 'product/:productId',
+        component: () => import('../views/UserProduct.vue'),
+        props: (route) => {
+          return {
+            productId: route.params.productId,
+          }
+        }
+      },
+      {
+        path: 'checkout/:orderId',
+        component: () => import('../views/UserCheckout.vue'),
+      }
+    ]
   }
 ]
 

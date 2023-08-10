@@ -20,8 +20,19 @@
                         <router-link to="/dashboard/coupons" class="nav-link">優惠券</router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link to="" class="nav-link">貼文</router-link>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" @click.prevent="logout">登出</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <router-link to="" class="nav-link">Blog</router-link>
+                  </li>
+                  <li class="nav-item">
+                    <router-link to="/user/cart" class="nav-link">購物車</router-link>
+                  </li>
                 </ul>
             </div>
         </div>

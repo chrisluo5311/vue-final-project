@@ -91,7 +91,7 @@ export default {
           this.product = response.data.products;
           this.pagination = response.data.pagination;
         }
-      })
+      });
     },
     updateProduct (item) {
       this.tempProduct = item;
@@ -112,10 +112,9 @@ export default {
         productComponent.hideModal();
         this.getProducts();
         this.$httpPushMessageState(response)
-      })
+      });
     },
     deleteProduct (item) {
-      this.tempProduct = item;
       const delComponent = this.$refs.delModal;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${item.id}`;
       this.isLoading = true;
@@ -126,7 +125,7 @@ export default {
           delComponent.hideModal();
           this.getProducts();
         }
-      })
+      });
     }
   },
   created () {
